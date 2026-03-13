@@ -1,42 +1,454 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>متجر الإعلانات المبوبة</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              primary: '#007BFF',
-              secondary: '#6c757d',
-              success: '#28a745',
-              danger: '#dc3545',
-              light: '#f8f9fa',
-              dark: '#343a40',
-            },
-          },
-        },
-      }
-    </script>
-  <script type="importmap">
-{
-  "imports": {
-    "react": "https://aistudiocdn.com/react@^19.2.0",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
-    "react/": "https://aistudiocdn.com/react@^19.2.0/",
-    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.27.0",
-    "react-router-dom": "https://aistudiocdn.com/react-router-dom@^7.9.4"
-  }
-}
-</script>
-<link rel="stylesheet" href="/index.css">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>خيام و تند و ظلات - السيرة الذاتية للشركة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Tajawal', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            background-color: #0a2e5a;
+            color: white;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+        
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #ffd700;
+        }
+        
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1593696140872-f51e925d16bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') no-repeat center center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            margin-top: 70px;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            padding: 0 20px;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+        
+        .hero p {
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background-color: #ffd700;
+            color: #0a2e5a;
+            padding: 15px 40px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            transition: all 0.3s;
+            border: 2px solid #ffd700;
+        }
+        
+        .cta-button:hover {
+            background-color: transparent;
+            color: #ffd700;
+        }
+        
+        .section {
+            padding: 5rem 5%;
+            background-color: white;
+        }
+        
+        .section h2 {
+            text-align: center;
+            font-size: 2.8rem;
+            margin-bottom: 3rem;
+            color: #0a2e5a;
+            position: relative;
+        }
+        
+        .section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            right: 50%;
+            transform: translateX(50%);
+            width: 80px;
+            height: 4px;
+            background-color: #ffd700;
+        }
+        
+        .services-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2.5rem;
+            margin-top: 2rem;
+        }
+        
+        .service {
+            flex: 1 1 300px;
+            max-width: 380px;
+            text-align: center;
+            padding: 2.5rem;
+            background: #f8f9fa;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.4s;
+            border: 1px solid #e9ecef;
+        }
+        
+        .service:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+            border-color: #0a2e5a;
+        }
+        
+        .service i {
+            font-size: 4rem;
+            color: #0a2e5a;
+            margin-bottom: 1.5rem;
+        }
+        
+        .service h3 {
+            font-size: 2rem;
+            margin-bottom: 1.2rem;
+            color: #0a2e5a;
+        }
+        
+        .service p {
+            font-size: 1.1rem;
+            color: #555;
+        }
+        
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .project {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            transition: transform 0.4s;
+        }
+        
+        .project:hover {
+            transform: scale(1.03);
+        }
+        
+        .project img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .project-content {
+            padding: 1.5rem;
+            background: white;
+        }
+        
+        .project h3 {
+            font-size: 1.6rem;
+            margin-bottom: 0.8rem;
+            color: #0a2e5a;
+        }
+        
+        .contact-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+        
+        .contact-info, .contact-form {
+            flex: 1 1 400px;
+        }
+        
+        .contact-info p {
+            margin: 1.5rem 0;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .contact-info i {
+            color: #0a2e5a;
+            font-size: 1.5rem;
+            margin-left: 15px;
+            min-width: 30px;
+        }
+        
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 1.5rem;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 1.1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            border-color: #0a2e5a;
+            outline: none;
+        }
+        
+        .contact-form textarea {
+            min-height: 180px;
+            resize: vertical;
+        }
+        
+        .contact-form button {
+            background-color: #0a2e5a;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .contact-form button:hover {
+            background-color: #08244a;
+            transform: translateY(-3px);
+        }
+        
+        .footer {
+            background-color: #0a2e5a;
+            color: white;
+            text-align: center;
+            padding: 2.5rem 5%;
+        }
+        
+        .social-links {
+            margin-bottom: 1.5rem;
+        }
+        
+        .social-links a {
+            display: inline-block;
+            color: white;
+            font-size: 1.8rem;
+            margin: 0 15px;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .social-links a:hover {
+            color: #ffd700;
+        }
+        
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+            
+            .hero p {
+                font-size: 1.6rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                padding: 1rem;
+            }
+            
+            .nav-links {
+                margin-top: 1rem;
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+            
+            .hero {
+                margin-top: 60px;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.4rem;
+            }
+            
+            .section {
+                padding: 3rem 5%;
+            }
+            
+            .section h2 {
+                font-size: 2.2rem;
+            }
+            
+            .contact-container {
+                flex-direction: column;
+            }
+        }
+    </style>
 </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/index.tsx"></script>
-  </body>
+<body>
+    <header class="header">
+        <div class="logo">خيام و تند و ظلات</div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="#about">من نحن</a></li>
+                <li><a href="#services">خدماتنا</a></li>
+                <li><a href="#portfolio">مشاريعنا</a></li>
+                <li><a href="#contact">اتصل بنا</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>حلول متكاملة للخيام والتند والظلال</h1>
+            <p>نساعدك في إنشاء مساحات مريحة وعملية لجميع المناسبات والفعاليات</p>
+            <a href="#contact" class="cta-button">اطلب عرض سعر</a>
+        </div>
+    </section>
+
+    <section id="about" class="section">
+        <h2>من نحن</h2>
+        <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+            <p style="font-size: 1.3rem; line-height: 2;">
+                شركة متخصصة في تصميم وتركيب وصيانة الخيام بأنواعها المختلفة والتند والظلال منذ عام 2005. نتميز باستخدام أفضل المواد والتقنيات الحديثة لتقديم حلول متكاملة تلبي جميع احتياجات العملاء من الأفراد والمؤسسات. نضمن الجودة والمتانة في جميع مشاريعنا مع خدمة عملاء مميزة على مدار الساعة.
+            </p>
+        </div>
+    </section>
+
+    <section id="services" class="section" style="background-color: #f1f5f9;">
+        <h2>خدماتنا</h2>
+        <div class="services-container">
+            <div class="service">
+                <i class="fas fa-tent"></i>
+                <h3>خيام</h3>
+                <p>نوفر جميع أنواع الخيام من خيام الأفراح والمناسبات، خيام المعارض، الخيام العسكرية، والخيام الجاهزة بمواصفات عالية الجودة وتصاميم عصرية تناسب جميع الاحتياجات.</p>
+            </div>
+            <div class="service">
+                <i class="fas fa-umbrella-beach"></i>
+                <h3>تند</h3>
+                <p>تركيب وتوريد التند بأنواعه المختلفة (ثابت، متحرك، أتوماتيك) للمباني السكنية والتجارية والفنادق والحدائق، بأفضل المواد المقاومة للعوامل الجوية.</p>
+            </div>
+            <div class="service">
+                <i class="fas fa-sun"></i>
+                <h3>ظلال</h3>
+                <p>أنظمة ظلال مبتكرة للحدائق والممرات والمسابح والكراجات، مع ضمان متانة عالية وحماية فائقة من أشعة الشمس والظروف المناخية المختلفة.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="portfolio" class="section">
+        <h2>مشاريعنا</h2>
+        <div class="portfolio-grid">
+            <div class="project">
+                <img src="https://images.unsplash.com/photo-1593696140872-f51e925d16bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="خيام مؤتمر">
+                <div class="project-content">
+                    <h3>خيام مؤتمر الرياض الدولي</h3>
+                    <p>تركيب خيام ضخمة بمساحة 2000 متر مربع</p>
+                </div>
+            </div>
+            <div class="project">
+                <img src="https://images.unsplash.com/photo-1551640415-65eb8b75de3f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="تند فندق">
+                <div class="project-content">
+                    <h3>تند فندق السمراء</h3>
+                    <p>تند أتوماتيكي للمطاعم الخارجية</p>
+                </div>
+            </div>
+            <div class="project">
+                <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="ظلال حدائق">
+                <div class="project-content">
+                    <h3>ظلال الحدائق العامة</h3>
+                    <p>أنظمة ظلال ثابتة للحدائق العامة</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="section" style="background-color: #f1f5f9;">
+        <h2>اتصل بنا</h2>
+        <div class="contact-container">
+            <div class="contact-info">
+                <p><i class="fas fa-map-marker-alt"></i> الرياض، حي العليا، شارع التخصصي</p>
+                <p><i class="fas fa-phone"></i> 920012345</p>
+                <p><i class="fas fa-mobile-alt"></i> 0551234567</p>
+                <p><i class="fas fa-envelope"></i> info@khayamtand.com</p>
+                <p><i class="fas fa-clock"></i> الأحد - الخميس: 8:00 ص - 8:00 م <br> الجمعة - السبت: 4:00 م - 10:00 م</p>
+            </div>
+            <form class="contact-form">
+                <input type="text" placeholder="الاسم الكامل" required>
+                <input type="email" placeholder="البريد الإلكتروني" required>
+                <input type="tel" placeholder="رقم الهاتف">
+                <textarea placeholder="الرسالة" required></textarea>
+                <button type="submit">إرسال الرسالة</button>
+            </form>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="social-links">
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-whatsapp"></i></a>
+        </div>
+        <p>&copy; 2025 خيام و تند و ظلات. جميع الحقوق محفوظة.</p>
+    </footer>
+</body>
 </html>
